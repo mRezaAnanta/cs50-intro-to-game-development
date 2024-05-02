@@ -39,7 +39,7 @@ require("states/PlayState")
 require("states/ScoreState")
 require("states/TitleScreenState")
 -- TODO: create a pause state when you press the "P" key
--- require("states/PauseState")
+require("states/PauseState")
 
 require("Bird")
 require("Pipe")
@@ -117,6 +117,9 @@ function love.load()
 		["score"] = function()
 			return ScoreState()
 		end,
+		["pause"] = function()
+			return PauseState()
+		end,
 	})
 	gStateMachine:change("title")
 
@@ -183,4 +186,3 @@ function love.draw()
 
 	push:finish()
 end
-
