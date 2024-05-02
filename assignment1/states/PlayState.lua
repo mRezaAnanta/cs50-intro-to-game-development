@@ -105,6 +105,10 @@ function PlayState:update(dt)
 			score = self.score,
 		})
 	end
+
+	if love.keyboard.wasPressed("p") then
+		gStateMachine:change("pause")
+	end
 end
 
 function PlayState:render()
