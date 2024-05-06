@@ -17,12 +17,14 @@ PIPE_HEIGHT = 288
 BIRD_WIDTH = 38
 BIRD_HEIGHT = 24
 local randSpawnTimer = 0
+SCORE = 0
+CURRENT_BIRD_POSITION = 0
 
 function PlayState:init()
 	self.bird = Bird()
 	self.pipePairs = {}
 	self.timer = 0
-	self.score = 0
+	-- self.score = 0
 	-- self.randSpawnTimer = math.random(2, 10)
 
 	-- initialize our last recorded Y value for a gap placement to base other gaps off of
@@ -30,6 +32,7 @@ function PlayState:init()
 end
 
 function PlayState:update(dt)
+	CURRENT_BIRD_POSITION = self.bird.y
 	-- update timer for pipe spawning
 	self.timer = self.timer + dt
 
@@ -59,7 +62,8 @@ function PlayState:update(dt)
 		-- be sure to ignore it if it's already been scored
 		if not pair.scored then
 			if pair.x + PIPE_WIDTH < self.bird.x then
-				self.score = self.score + 1
+				-- self.score = self.score + 1
+				SCORE = SCORE + 1
 				pair.scored = true
 				sounds["score"]:play()
 			end
@@ -87,7 +91,8 @@ function PlayState:update(dt)
 				sounds["hurt"]:play()
 
 				gStateMachine:change("score", {
-					score = self.score,
+					-- score = self.score,
+					score = SCORE,
 				})
 			end
 		end
@@ -102,11 +107,13 @@ function PlayState:update(dt)
 		sounds["hurt"]:play()
 
 		gStateMachine:change("score", {
-			score = self.score,
+			-- score = self.score,
+			score = SCORE,
 		})
 	end
 
 	if love.keyboard.wasPressed("p") then
+		-- CURRENT_BIRD_POSITION = self.bird.y
 		gStateMachine:change("pause")
 	end
 end
@@ -117,11 +124,13 @@ function PlayState:render()
 	end
 
 	love.graphics.setFont(flappyFont)
-	love.graphics.print("Score: " .. tostring(self.score), 8, 8)
+	-- love.graphics.print("Score: " .. tostring(self.score), 8, 8)
+	love.graphics.print("Score: " .. tostring(SCORE), 8, 8)
 	-- love.graphics.print("Spawn Timer: " .. tostring(randSpawnTimer), 10, 10)
-	love.graphics.print("Gap Height: " .. tostring(GAP_HEIGHT), 8, 40)
+	love.graphics.print("Bird Y: " .. tostring(CURRENT_BIRD_POSITION), 8, 40)
 
 	self.bird:render()
+	-- self.bird:render(self.x, self.y)
 end
 
 --[[
@@ -129,6 +138,7 @@ end
 ]]
 function PlayState:enter()
 	-- if we're coming from death, restart scrolling
+	self.bird.y = CURRENT_BIRD_POSITION
 	scrolling = true
 end
 
@@ -139,4 +149,3 @@ function PlayState:exit()
 	-- stop scrolling for the death/score screen
 	scrolling = false
 end
-

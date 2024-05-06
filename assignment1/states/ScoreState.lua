@@ -17,6 +17,11 @@ BRONZE_MEDAL = love.graphics.newImage("3rd medal pixel.png")
     When we enter the score state, we expect to receive the score
     from the play state so we know what to render to the State.
 ]]
+
+function ScoreState:init()
+	-- self.bird = Bird()
+end
+
 -- TODO: how to display an image when you enter the scorestate
 -- TODO: use 3 different image for each high scores, and have minimum score needed for each one
 function ScoreState:enter(params)
@@ -25,6 +30,9 @@ end
 
 function ScoreState:update(dt)
 	-- go back to play if enter is pressed
+	-- CURRENT_BIRD_POSITION = VIRTUAL_HEIGHT / 2 - 8
+	-- CURRENT_BIRD_POSITION = self.bird.y
+	CURRENT_BIRD_POSITION = Bird().y
 	if love.keyboard.wasPressed("enter") or love.keyboard.wasPressed("return") then
 		gStateMachine:change("countdown")
 	end
