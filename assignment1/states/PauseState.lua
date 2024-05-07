@@ -15,6 +15,7 @@ PAUSE = true
 
 function PauseState:init()
 	self.bird = Bird()
+	self.pipePair = PipePair()
 end
 
 function PauseState:enter()
